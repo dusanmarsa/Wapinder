@@ -13,7 +13,6 @@ return [
     'nsset' => true,
     'dns' => true,
     'owner_c' => true,
-    'admin_c' => true,
     'rules' => true
   ],
   'domain-check' => [

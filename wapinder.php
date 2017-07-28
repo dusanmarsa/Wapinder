@@ -5,28 +5,32 @@ class WAPINDER {
   /**
   * -> Initialize variables
   */
-  protected $user;
-  protected $pass;
-  protected $auth;
-  protected $errors = array();
-
-  protected $comand_rules;
+  protected $_user;
+  protected $_pass;
+  protected $_auth;
+  protected $_errors = array();
+  protected $_comand_rules;
+  protected $_dns;
 
   /**
   * -> Endpoint
   */
-  protected $endpoint = 'https://api.wedos.com/wapi/json';
+  protected $_endpoint = 'https://api.wedos.com/wapi/json';
 
   /**
   * -> Constructor
   */
-  public function __construct($user, $pass)
+  public function __construct()
   {
-    $this->user = $user;
-    $this->pass = $pass;
-    $this->auth = sha1($user.sha1($pass).date('H', time()));
+    $config = include('./data/config.php');
 
-    $this->comand_rules = include('./data/comand_rules.php');
+    $this->_user = $config->user;
+    $this->_pass = $config->pass;
+    $this->_dns = $config->dns;
+
+    $this->_auth = sha1($this->_user.sha1($this->_pass).date('H', time()));
+
+    $this->_comand_rules = include('./data/comand_rules.php');
   }
 
   /**
@@ -34,20 +38,19 @@ class WAPINDER {
   */
   public function request($command = 'ping', $data = array())
   {
-    if(!$this->isReachable())
-    {
-      return array_push($this->errors, 'Wedos API is unreachable, try it later.');
-    }
+    if(!$this->canBeUsed())
+      return array_push($this->_errors, 'Wedos API is unreachable, try it later.');
 
     if(!$this->_checkRules($data, $command))
-    {
-      return array_push($this->errors, 'Some data missing, try it again!');
-    }
+      return array_push($this->_errors, 'Some data missing, try it again!');
+
+    if(array_key_exists('dns', $data))
+      $data->dns = $this->_dns;
 
     return $this->_sendRequest([
       'request' => [
-        'user' => $this->user,
-        'auth' => $this->auth,
+        'user' => $this->_user,
+        'auth' => $this->_auth,
         'command' => $command,
         'data' => $data
       ]
@@ -57,16 +60,15 @@ class WAPINDER {
   /**
   * -> Chech if API is reachable
   */
-  public function isReachable()
+  public function canBeUsed()
   {
-    $sess = curl_init($this->endpoint);
+    $sess = curl_init($this->_endpoint);
     curl_setopt($sess, CURLOPT_RETURNTRANSFER, true);
     $res = curl_exec($sess);
     $httpCode = curl_getinfo($sess, CURLINFO_HTTP_CODE);
 
-    if($httpCode == 404) {
+    if($httpCode != 200)
         return false;
-    }
 
     return true;
   }
@@ -76,19 +78,17 @@ class WAPINDER {
   */
   public function getErrors()
   {
-    return $this->errors;
+    return $this->_errors;
   }
 
   function _checkRules($arr, $command)
   {
     //> Missing
-    $a = array_diff_key($this->comand_rules[$command], $arr);
+    $a = array_diff_key($this->_comand_rules[$command], $arr);
 
     //> Error
     if(count($a) > 0)
-    {
       return false;
-    }
 
     //> Pass
     return true;
@@ -101,7 +101,7 @@ class WAPINDER {
   {
       $post = 'request='.urlencode(json_encode($request));
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $this->endpoint);
+      curl_setopt($ch, CURLOPT_URL, $this->_endpoint);
       curl_setopt($ch, CURLOPT_POST, true);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -117,7 +117,7 @@ class WAPINDER {
   */
   function _returnRespond($res)
   {
-    return json_decode($res)->response;
+    return json_decode($res);
   }
 
 }
