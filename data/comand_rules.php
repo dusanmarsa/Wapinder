@@ -1,17 +1,56 @@
 <?php
 
 return [
-  'ping' => [],
+
+  /**
+  * > REQUESTS FOR MANIPULATE WITH DOMAINS
+  */
+
+  'ping' => [ /*  */ ],
   'domain-create' => [
-    'name' => null,
-    'period' => null,
-    'nsset' => null,
-    'dns' => null,
-    'owner_c' => null,
-    'admin_c' => null,
-    'rules' => null
+    'name' => true,
+    'period' => true,
+    'nsset' => true,
+    'dns' => true,
+    'owner_c' => true,
+    'admin_c' => true,
+    'rules' => true
   ],
   'domain-check' => [
-    'name' => null
+    'name' => true
+  ],
+  'domain-tld-period-check' => [
+    'tld' => true,
+    'period' => true
+  ],
+  'domain-send-auth-info' => [
+    'name' => true
+  ],
+  'příkaz domain-update-ns' => [
+    'name' => true,
+    'nsset' => true,
+    'dns' => true
+  ],
+  'domain-transfer' => [
+    'name' => true,
+    'auth_info' => true,
+    'rules' => true
+  ],
+  'domain-transfer-check' => [
+    'name' => true
+  ],
+  'domains-list' => [ /* */ ],
+  'domain-renew' => [
+    'name' => true,
+    'period' => true
   ]
+
+  /**
+  * > REQUESTS FOR MANIPULATE WITH CONTACTS WITHIN DOMAIN REGISTRY
+  */
+
+  /**
+  * > REQUESTS FOR MANIPULATE WITH NSSET'S WITHIN DOMAIN REGISTRY
+  */
+
 ];

@@ -2,7 +2,9 @@
 
 class WAPINDER {
 
-  //> Initialize variables
+  /**
+  * -> Initialize variables
+  */
   protected $user;
   protected $pass;
   protected $auth;
@@ -10,10 +12,14 @@ class WAPINDER {
 
   protected $comand_rules;
 
-  //> Wedos endpoints types
+  /**
+  * -> Endpoint
+  */
   protected $endpoint = 'https://api.wedos.com/wapi/json';
 
-  //> WAPINDER constructor
+  /**
+  * -> Constructor
+  */
   public function __construct($user, $pass)
   {
     $this->user = $user;
@@ -23,7 +29,9 @@ class WAPINDER {
     $this->comand_rules = include('./data/comand_rules.php');
   }
 
-  //> Make new API request
+  /**
+  * -> Make a new API request
+  */
   public function request($command = 'ping', $data = array())
   {
     if(!$this->isReachable())
@@ -46,7 +54,9 @@ class WAPINDER {
     ]);
   }
 
-  //> Check if API is reachible to comands
+  /**
+  * -> Chech if API is reachable
+  */
   public function isReachable()
   {
     $sess = curl_init($this->endpoint);
@@ -61,6 +71,9 @@ class WAPINDER {
     return true;
   }
 
+  /**
+  * -> Return errors array
+  */
   public function getErrors()
   {
     return $this->errors;
@@ -81,7 +94,9 @@ class WAPINDER {
     return true;
   }
 
-  //> Send request to WEDOS API
+  /**
+  * -> send request to API server
+  */
   function _sendRequest($request)
   {
       $post = 'request='.urlencode(json_encode($request));
@@ -97,7 +112,9 @@ class WAPINDER {
       return $this->_returnRespond($res);
   }
 
-  //> Work with response
+  /**
+  * -> Work with response from server
+  */
   function _returnRespond($res)
   {
     return json_decode($res)->response;
