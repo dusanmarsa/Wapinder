@@ -8,20 +8,7 @@ class WAPINDER {
   protected $auth;
   protected $errors = array();
 
-  protected $comand_rules = [
-    'domain-create' => [
-      'name' => null,
-      'period' => null,
-      'nsset' => null,
-      'dns' => null,
-      'owner_c' => null,
-      'admin_c' => null,
-      'rules' => null
-    ],
-    'domain-check' => [
-      'name' => null
-    ]
-  ];
+  protected $comand_rules;
 
   //> Wedos endpoints types
   protected $endpoint = 'https://api.wedos.com/wapi/json';
@@ -32,6 +19,8 @@ class WAPINDER {
     $this->user = $user;
     $this->pass = $pass;
     $this->auth = sha1($user.sha1($pass).date('H', time()));
+
+    $this->comand_rules = include('./data/comand_rules.php');
   }
 
   //> Make new API request
@@ -44,7 +33,7 @@ class WAPINDER {
 
     if(!$this->_checkRules($data, $command))
     {
-      return array_push($this->errors, 'Any data missing, try it again!');
+      return array_push($this->errors, 'Some data missing, try it again!');
     }
 
     return $this->_sendRequest([
@@ -80,7 +69,7 @@ class WAPINDER {
   function _checkRules($arr, $command)
   {
     //> Missing
-    $a = array_diff_key($arr, $this->comand_rules[$command]);
+    $a = array_diff_key($this->comand_rules[$command], $arr);
 
     //> Error
     if(count($a) > 0)
@@ -115,19 +104,3 @@ class WAPINDER {
   }
 
 }
-
-$user = 'centrioservices@gmail.com';
-$pass = "?93nI8=a7tR}F";
-
-$worker = new WAPINDER($user, $pass);
-
-echo '<p>';
-echo 'Request: <pre>';
-var_dump($worker->request('domain-check', ['name' => 'gsgsdgsdf.cz']));
-echo '</pre></p>';
-
-
-echo '<p>';
-echo 'Errors: <pre>';
-print_r($worker->getErrors());
-echo '</pre></p>';
