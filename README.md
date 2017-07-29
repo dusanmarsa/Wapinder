@@ -6,30 +6,41 @@ Pomocná třída pro Wedos API, která umožňuje jednoduché napojení a volán
 
 ##### 1)  Importujeme wapinder do souboru
 ```php
+// ./index.php
 
 include_once("./wapinder.php");
 
 ```
-##### 2)  Inicializujeme
+##### 2)  Nastavíme config file
 ```php
+// ./data/config.php
 
-$worker = new WAPINDER($name, $pass);
-// $name je uživatelské jméno u wedosu
-// $pass je heslo nastavené na účtu v sekci WAPI
+user -> přihlašovací jméno na wedos
+pass -> heslo nastavené při spouštění WAPI v administraci
+api -> na jaký DNS server se budou registrovat domény (libovolné, pokud se nebude používat tak nechat prázdné)
+
+```
+##### 3)  Inicializujeme
+```php
+// ./index.php
+
+$worker = new WAPINDER();
 
 ```
 
-##### 3)  Použijeme a čekáme na odpověď
+##### 4)  Použijeme a čekáme na odpověď
 ```php
+// ./index.php
 
 $res = $worker->request();
 // prázdný request je roven příkazu "ping"
 
 ```
 
-##### 4)  Pracujeme s vrácenou hodnotou
+##### 5)  Pracujeme s vrácenou hodnotou
 
 ```php
+// ./index.php
 
 var_dumb($res);
 // $res je pole vrácených hodnost (response)
@@ -41,6 +52,9 @@ echo $code;
 // Více o návratových hodnotách v sekci "materiály"
 
 ```
+
+# > Další úpravy
+Je možnost si upravit povolené příkazy v souboru "./data/comand_rules.php" kde stačí nepoužívané zakomentovat.
 
 
 # > Materiály
