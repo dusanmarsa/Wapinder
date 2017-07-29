@@ -7,38 +7,44 @@ return [
   */
 
   'ping' => [ /*  */ ],
+    // Create domain
   'domain-create' => [
     'name' => true,
     'period' => true,
-    'nsset' => true,
     'dns' => true,
     'owner_c' => true,
     'rules' => true
   ],
+    // Check if domain can be registered
   'domain-check' => [
     'name' => true
   ],
+    // Check if domain can be registered for give amout of years
   'domain-tld-period-check' => [
     'tld' => true,
     'period' => true
   ],
+    // Send auth info to email of domain owner
   'domain-send-auth-info' => [
     'name' => true
   ],
+    // Change DNS of domain
   'příkaz domain-update-ns' => [
     'name' => true,
     'nsset' => true,
     'dns' => true
   ],
+    // Transfer domain from another register to wedos
   'domain-transfer' => [
     'name' => true,
     'auth_info' => true,
     'rules' => true
   ],
+    // Check if domain can be transfered
   'domain-transfer-check' => [
     'name' => true
   ],
-  'domains-list' => [ /* */ ],
+    // Renew domain for a given amout of years
   'domain-renew' => [
     'name' => true,
     'period' => true

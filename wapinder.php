@@ -45,7 +45,8 @@ class WAPINDER {
       return array_push($this->_errors, 'Some data missing, try it again!');
 
     if(array_key_exists('dns', $data))
-      $data->dns = $this->_dns;
+      if(!empty($this->_dns))
+        $data->dns = $this->_dns;
 
     return $this->_sendRequest([
       'request' => [
