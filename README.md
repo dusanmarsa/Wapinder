@@ -46,7 +46,7 @@ var_dumb($res);
 // $res je pole vrácených hodnost (response)
 // můžeme si například vypsat hodnotu code
 
-$code = $res->code;
+$code = $res->response->code;
 echo $code;
 // Hodnota $code by měla vrátit hodnotu 1000 pokud vše proběhlo v pořádku.
 // Více o návratových hodnotách v sekci "materiály"
