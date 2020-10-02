@@ -1,3 +1,5 @@
+# ---- NOT MAINTAINED, JUST PROOF OF CONCEPT
+
 # > Wapinder
 
 Pomocná třída pro Wedos API, která umožňuje jednoduché napojení a volání requestů přímo na API endpointy.
